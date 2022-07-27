@@ -14,8 +14,8 @@ class Banker:
         self.round_score = 0
 
     def commit_round_score(self):
-        self.score += self.round_score
         self.score = 0
+        self.score += self.round_score
 
     def get_score(self):
         return self.score
@@ -216,7 +216,7 @@ def game_round(game_tracker):
 
     print(f"starting round {game_tracker.get_round()}")
     print(f"Rolling {game_tracker.get_die_count()} dice...")
-    test = [2, 1, 2, 2, 2, 4]
+    #test = [2, 1, 2, 2, 2, 4]
     roll = GameLogic.roll_dice(game_tracker.get_die_count())
     print(f"*** {tuple(roll)} ***")
     print("Enter dice to keep or (q)uit")
