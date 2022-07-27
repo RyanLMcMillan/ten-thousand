@@ -1,8 +1,5 @@
 import random
 from collections import Counter
-from gametracker import GameTracker
-
-
 
 class GameLogic:
     def __init__(self):
