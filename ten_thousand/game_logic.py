@@ -1,6 +1,17 @@
 import random
 from collections import Counter
 
+class Banker:
+    def __init__(self):
+        self.score = 0
+
+    def add_score(self, points):
+        self.score += points
+
+    def get_score(self):
+        return self.score
+
+
 class GameLogic:
     def __init__(self):
         pass
@@ -25,7 +36,7 @@ class GameLogic:
 
         # straight
         if len(roll) == 6:
-            return 1500
+            score += 1500
 
         #6 of a kind
         if roll[0][1] == 6:
@@ -157,3 +168,30 @@ class GameLogic:
             score += 50
 
         return score
+
+
+def play_game():
+    print("Welcome to Ten Thousand")
+    print("(y)es to play or (n)o to decline")
+    start = input("> ")
+    if start == "y":
+        print("starting round 1")
+        print("Rolling 6 dice...")
+        roll = GameLogic.roll_dice(6)
+        test = [3, 2, 5, 4, 3, 3]
+        print(f"*** {tuple(test)} ***")
+        print("Enter dice to keep or (q)uit")
+        cont = input("> ")
+        round_score = GameLogic.calculate_score(tuple(cont))
+        total_score = 0
+        total_score += round_score
+        print(f"You have {round_score} unbanked points and 5 dice remaining")
+        if cont == "q":
+            print(f"Thanks for playing. You earned {total_score}")
+
+    if start == "n":
+        print("OK. Maybe another time")
+
+
+if __name__ == "__main__":
+    play_game()
