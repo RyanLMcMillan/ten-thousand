@@ -1,5 +1,3 @@
-import random
-from collections import Counter
 from banker import Banker
 
 class GameTracker:

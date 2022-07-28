@@ -20,11 +20,10 @@ def game_round(game_tracker):
     die_count = game_tracker.get_die_count() - len(cont)
     game_tracker.set_die(die_count)
     round_score = GameLogic.calculate_score(tuple(cont))
+    current_round_points = round_score + banker.get_round_score()
 
-    if round_score == 0:
-        banker.abort_round_score()
 
-    print(f"You have {round_score} unbanked points and {die_count} dice remaining")
+    print(f"You have {current_round_points} unbanked points and {die_count} dice remaining")
 
     print("(r)oll again, (b)ank your points or (q)uit:")
     action = input("> ")
@@ -33,14 +32,20 @@ def game_round(game_tracker):
         game_tracker.quit()
         return
     elif action == "r":
+        banker.add_score(round_score)
         game_round(game_tracker)
         pass
     elif action == "b":
         banker.add_score(round_score)
+        banker.commit_round_score()
+        print(f"You banked {round_score} points in round {game_tracker.get_round()}")
         pass
 
-    banker.commit_round_score()
-
+    if round_score == 0:
+        banker.abort_round_score()
+        print("""****************************************
+    **        Zilch!!! Round over         **
+    ****************************************""")
 
 def play_game():
     print("Welcome to Ten Thousand")
@@ -52,15 +57,20 @@ def play_game():
         return
 
     game_tracker = GameTracker()
-
+    banker = game_tracker.get_banker()
     game_round(game_tracker)
+
+    total_points = banker.get_score()
+    print(f"Total score is {total_points} points")
 
     while game_tracker.continue_playing():
         game_tracker.add_round()
         game_round(game_tracker)
+        total_points = banker.get_score()
+        print(f"Total score is {total_points} points")
 
-        if game_tracker.get_round() == 20:
-            print(f"Thank you for playing; you earned {game_tracker.get_score()} points.")
+        if game_tracker.get_round() == 20 or total_points > 10000:
+            print(f"Thank you for playing; you earned {total_points} points.")
             pass
         pass
 
